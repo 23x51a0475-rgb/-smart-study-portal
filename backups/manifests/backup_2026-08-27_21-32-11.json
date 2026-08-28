@@ -1,0 +1,40 @@
+{
+    "backup_id": "backup_2026-08-27_21-32-11",
+    "database": "materials_2026-08-27_21-32-11.db",
+    "created_at": "2026-08-27T21:32:11.285436",
+    "total_materials": 5,
+    "total_files": 5,
+    "total_size_bytes": 18984436,
+    "files": [
+        {
+            "material_id": 2,
+            "relative_path": "materials/2026/08/cd/cd5c4378-841f3955.pdf",
+            "size": 15153498,
+            "sha256": "cd5c4378640eca0c03a75b733ac380f5594bd1c8b79f713d78c56819c9e46d3f"
+        },
+        {
+            "material_id": 3,
+            "relative_path": "materials/2026/08/6e/6e069183-bada333f.pdf",
+            "size": 755905,
+            "sha256": "6e069183947bfbd2e6464bf5d8910ce22931e0fb44526953a336d78c76a55d12"
+        },
+        {
+            "material_id": 4,
+            "relative_path": "materials/2026/08/90/90f69fdd-699d77f6.pdf",
+            "size": 188096,
+            "sha256": "90f69fdd0ed599a4004ec7f59982d5670a36b2e9786cad4642ce052c82d6a8dc"
+        },
+        {
+            "material_id": 5,
+            "relative_path": "materials/2026/08/26/26595d23-e7b37dca.png",
+            "size": 2886891,
+            "sha256": "26595d235666197b70e15548bcf66a0ce7bbe4538a007a9f4a09126211ca9082"
+        },
+        {
+            "material_id": 7,
+            "relative_path": "materials/2026/08/8d/8d557644-8b31f2a6.pdf",
+            "size": 46,
+            "sha256": "8d557644ae021d72d1eb2edc6fc070ce69598e1347a1b3a7906221a76103d78b"
+        }
+    ]
+}

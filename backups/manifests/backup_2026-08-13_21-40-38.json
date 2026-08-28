@@ -1,0 +1,16 @@
+{
+    "backup_id": "backup_2026-08-13_21-40-38",
+    "database": "materials_2026-08-13_21-40-38.db",
+    "created_at": "2026-08-13T21:40:38.712529",
+    "total_materials": 1,
+    "total_files": 1,
+    "total_size_bytes": 1400,
+    "files": [
+        {
+            "material_id": 1,
+            "relative_path": "materials/2026/08/59/590f5677-84f31e0d.pdf",
+            "size": 1400,
+            "sha256": "590f5677103ac85e42ddc71c08d7ba99d0a726328438bf77c8a69ae7b0240a28"
+        }
+    ]
+}

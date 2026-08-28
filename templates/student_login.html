@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Login — Sign in to access study materials.">
+  <title>Student Login — SREC Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="particles">
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  </div>
+
+  <nav class="navbar">
+    <a href="{{ url_for('index') }}" class="navbar-brand">
+      SREC Portal
+    </a>
+    <ul class="navbar-links">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('faculty_login') }}">Faculty Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="form-card">
+      <h2>Student Login</h2>
+      <form method="POST" action="{{ url_for('student_login') }}" id="student-login-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="reg_no">Registration Number</label>
+          <input type="text" id="reg_no" name="reg_no" placeholder="e.g. 2024CSE001" required>
+        </div>
+        <div class="form-group">
+          <label for="department">Department</label>
+          <select id="department" name="department" required>
+            <option value="" disabled selected>Select Department</option>
+            <option value="CSE">Computer Science & Engineering</option>
+            <option value="ECE">Electronics & Communication</option>
+            <option value="EEE">Electrical & Electronics</option>
+            <option value="MECH">Mechanical Engineering</option>
+            <option value="CIVIL">Civil Engineering</option>
+            <option value="IT">Information Technology</option>
+            <option value="AIDS">AI & Data Science</option>
+            <option value="CSBS">CS & Business Systems</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="year">Year</label>
+          <select id="year" name="year" required>
+            <option value="" disabled selected>Select Year</option>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-submit" id="student-login-btn">Login</button>
+      </form>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 SREC Portal &middot; Developed by SADHIK
+  </footer>
+
+</body>
+</html>

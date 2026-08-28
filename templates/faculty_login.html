@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Faculty Login — Sign in to upload study materials.">
+  <title>Faculty Login — SREC Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="particles">
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  </div>
+
+  <nav class="navbar">
+    <a href="{{ url_for('index') }}" class="navbar-brand">
+      SREC Portal
+    </a>
+    <ul class="navbar-links">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('student_login') }}">Student Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="form-card">
+      <h2>Faculty Login</h2>
+      <form method="POST" action="{{ url_for('faculty_login') }}" id="faculty-login-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="department">Department</label>
+          <select id="department" name="department" required>
+            <option value="" disabled selected>Select Department</option>
+            <option value="CSE">Computer Science & Engineering</option>
+            <option value="ECE">Electronics & Communication</option>
+            <option value="EEE">Electrical & Electronics</option>
+            <option value="MECH">Mechanical Engineering</option>
+            <option value="CIVIL">Civil Engineering</option>
+            <option value="IT">Information Technology</option>
+            <option value="AIDS">AI & Data Science</option>
+            <option value="CSBS">CS & Business Systems</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="password">Faculty Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter faculty password" required>
+        </div>
+        <button type="submit" class="btn-submit" id="faculty-login-btn">Login</button>
+      </form>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 SREC Portal &middot; Developed by SADHIK
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SREC Portal — A modern platform for students and faculty to share study materials.">
+  <title>SREC Portal — Learning Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Floating Particles -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="{{ url_for('index') }}" class="navbar-brand">
+      SREC Portal
+    </a>
+    <ul class="navbar-links">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('student_login') }}">Student</a></li>
+      <li><a href="{{ url_for('faculty_login') }}">Faculty</a></li>
+    </ul>
+  </nav>
+
+  <!-- Interactive Top Scroll Bar Component -->
+  <div class="top-scroll-bar-wrap" id="top-scroll-bar-wrap" style="display: none;">
+    <div class="scroll-bar-header">
+      <span class="scroll-bar-badge">COURSE MATERIALS</span>
+      <span class="scroll-bar-count" id="scroll-bar-count">0 Files</span>
+    </div>
+    <div class="scroll-bar-controls">
+      <button type="button" class="scroll-btn scroll-left" onclick="scrollTopBar(-250)" title="Scroll Left">&lsaquo;</button>
+      <div class="scroll-bar-track" id="scroll-bar-track"></div>
+      <button type="button" class="scroll-btn scroll-right" onclick="scrollTopBar(250)" title="Scroll Right">&rsaquo;</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <img src="https://www.srecnandyal.edu.in/images/sreclogo.jpg" alt="SREC Logo" class="hero-logo">
+      <h1>Santhiram Engineering College</h1>
+      <p class="college-subtitle">(Autonomous) — Nandyal</p>
+      <p>A modern study portal for students and faculty. Access materials, upload resources, and learn — all in one place.</p>
+    </section>
+
+    <!-- Login Cards -->
+    <div class="cards-grid">
+      <div class="card" id="student-card">
+        <h2>Student Login</h2>
+        <p>Access study materials and download files uploaded by faculty.</p>
+        <a href="{{ url_for('student_login') }}" class="btn">Login as Student</a>
+      </div>
+
+      <div class="card" id="faculty-card">
+        <h2>Faculty Login</h2>
+        <p>Upload study materials and share resources with students.</p>
+        <a href="{{ url_for('faculty_login') }}" class="btn">Login as Faculty</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 SREC Portal &middot; Developed by SADHIK
+  </footer>
+
+  <script>
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function scrollTopBar(offset) {
+      const track = document.getElementById('scroll-bar-track');
+      if (track) {
+        track.scrollBy({ left: offset, behavior: 'smooth' });
+      }
+    }
+
+    function loadTopScrollBar() {
+      fetch('/api/materials/ticker?limit=100')
+        .then(res => res.json())
+        .then(data => {
+          const wrap = document.getElementById('top-scroll-bar-wrap');
+          const track = document.getElementById('scroll-bar-track');
+          const countEl = document.getElementById('scroll-bar-count');
+          if (!wrap || !track) return;
+
+          if (data.success && data.materials && data.materials.length > 0) {
+            if (countEl) {
+              countEl.textContent = `${data.materials.length} ${data.materials.length === 1 ? 'File' : 'Files'}`;
+            }
+            let html = '';
+            data.materials.forEach(item => {
+              const filename = item.filename || item.title;
+              const subject = item.subject || 'General';
+              const sizeStr = item.file_size ? formatBytes(item.file_size) : '';
+              const metaStr = [subject, sizeStr].filter(Boolean).join(' • ');
+              const tooltip = `Title: ${filename}\nSubject: ${subject}\nUploaded by: ${item.uploaded_by || 'Faculty'}\nDate: ${item.uploaded_at ? item.uploaded_at.substring(0, 10) : ''}`;
+              const safeFilename = filename.replace(/"/g, '&quot;');
+
+              html += `
+                <div class="pdf-chip" title="${tooltip.replace(/"/g, '&quot;')}" onclick="window.open('/api/materials/${item.id}/view', '_blank')">
+                  <span class="pdf-icon">📄</span>
+                  <div class="pdf-chip-info">
+                    <span class="pdf-chip-title" title="${safeFilename}">${safeFilename}</span>
+                    <span class="pdf-chip-meta">${metaStr}</span>
+                  </div>
+                  <div class="pdf-chip-actions">
+                    <a href="/api/materials/${item.id}/view" target="_blank" class="chip-act view" onclick="event.stopPropagation()" title="Open PDF">View</a>
+                    <a href="/api/materials/${item.id}/download" class="chip-act download" onclick="event.stopPropagation()" title="Download PDF">⬇</a>
+                  </div>
+                </div>
+              `;
+            });
+            track.innerHTML = html;
+            wrap.style.display = 'flex';
+          } else {
+            wrap.style.display = 'none';
+          }
+        })
+        .catch(err => {
+          console.error('Error loading top scroll bar:', err);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTopScrollBar();
+      setInterval(loadTopScrollBar, 30000);
+    });
+  </script>
+
+</body>
+</html>
